@@ -1,5 +1,6 @@
 package com.devsuperior.workshopmongo.controllers;
 
+import com.devsuperior.workshopmongo.models.dto.PostDTO;
 import com.devsuperior.workshopmongo.models.dto.UserDTO;
 import com.devsuperior.workshopmongo.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -50,5 +51,11 @@ public class UserController {
     public ResponseEntity<UserDTO> delete(@PathVariable String id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{id}/posts")
+    public ResponseEntity<List<PostDTO>> getUserPosts(@PathVariable String id) {
+        List<PostDTO> list = userService.getUserPosts(id);
+        return ResponseEntity.ok().body(list);
     }
 }
