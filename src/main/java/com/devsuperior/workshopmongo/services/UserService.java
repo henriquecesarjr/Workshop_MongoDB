@@ -38,6 +38,14 @@ public class UserService {
         return new UserDTO(entity);
     }
 
+    public UserDTO update(String id, UserDTO dto) {
+        User entity = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        copyDtoToEntity(dto, entity);
+        entity = userRepository.save(entity);
+        return new UserDTO(entity);
+    }
+
     private void copyDtoToEntity(UserDTO dto, User entity) {
         entity.setName(dto.getEmail());
         entity.setEmail(dto.getEmail());
