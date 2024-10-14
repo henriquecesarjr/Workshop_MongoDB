@@ -19,7 +19,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
+    /*
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
         List<UserDTO> list = userService.findAll();
@@ -57,5 +57,5 @@ public class UserController {
     public ResponseEntity<List<PostDTO>> getUserPosts(@PathVariable String id) {
         List<PostDTO> list = userService.getUserPosts(id);
         return ResponseEntity.ok().body(list);
-    }
+    }*/
 }

@@ -20,7 +20,7 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
+/*
     public List<UserDTO> findAll() {
         List<User> list = userRepository.findAll();
         return list.stream().map(UserDTO::new)
@@ -64,5 +64,5 @@ public class UserService {
     private void copyDtoToEntity(UserDTO dto, User entity) {
         entity.setName(dto.getEmail());
         entity.setEmail(dto.getEmail());
-    }
+    }*/
 }
