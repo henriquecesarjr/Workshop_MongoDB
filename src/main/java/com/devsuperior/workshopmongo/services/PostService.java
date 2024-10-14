@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
 
-    private final PostRepository postRepository;
-
+    //private final PostRepository postRepository;
+/*
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
@@ -54,5 +54,5 @@ public class PostService {
         } catch (DateTimeParseException e) {
             return alternative;
         }
-    }
+    }*/
 }

@@ -17,7 +17,7 @@ public class PostController {
     public PostController(PostService postService) {
         this.postService = postService;
     }
-
+/*
     @GetMapping(value = "/{id}")
     public ResponseEntity<PostDTO> findById(@PathVariable String id) {
         PostDTO obj = postService.findById(id);
@@ -38,6 +38,6 @@ public class PostController {
     {
         List<PostDTO> list = postService.fullSearch(text, start, end);
         return ResponseEntity.ok().body(list);
-    }
+    }*/
 
 }

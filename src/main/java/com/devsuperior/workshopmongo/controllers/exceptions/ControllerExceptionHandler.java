@@ -1,7 +1,6 @@
 package com.devsuperior.workshopmongo.controllers.exceptions;
 
 import com.devsuperior.workshopmongo.services.exceptions.ResourceNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
