@@ -19,7 +19,7 @@ public class UserDTO {
 
     public UserDTO(User entity) {
         id = entity.getId();
-        name = entity.getEmail();
+        name = entity.getName();
         email = entity.getEmail();
     }
 

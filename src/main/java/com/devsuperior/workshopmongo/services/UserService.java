@@ -32,14 +32,13 @@ public class UserService {
                 .map(UserDTO::new)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("User not found")));
     }
-/*
-    public UserDTO insert(UserDTO dto) {
+
+    public Mono<UserDTO> insert(UserDTO dto) {
         User entity = new User();
         copyDtoToEntity(dto, entity);
-        entity = userRepository.insert(entity);
-        return new UserDTO(entity);
+        return userRepository.save(entity).map(UserDTO::new);
     }
-
+/*
     public UserDTO update(String id, UserDTO dto) {
         User entity = getEntityById(id);
         copyDtoToEntity(dto, entity);
@@ -61,9 +60,9 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
     }
-
+*/
     private void copyDtoToEntity(UserDTO dto, User entity) {
-        entity.setName(dto.getEmail());
+        entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());
-    }*/
+    }
 }
