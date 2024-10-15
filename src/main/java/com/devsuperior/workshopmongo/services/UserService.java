@@ -38,14 +38,18 @@ public class UserService {
         copyDtoToEntity(dto, entity);
         return userRepository.save(entity).map(UserDTO::new);
     }
-/*
-    public UserDTO update(String id, UserDTO dto) {
-        User entity = getEntityById(id);
-        copyDtoToEntity(dto, entity);
-        entity = userRepository.save(entity);
-        return new UserDTO(entity);
-    }
 
+    public Mono<UserDTO> update(String id, UserDTO dto) {
+        return userRepository.findById(id)
+                .flatMap(existingUser -> {
+                    existingUser.setName(dto.getName());
+                    existingUser.setEmail(dto.getEmail());
+                    return userRepository.save(existingUser);
+                })
+                .map(UserDTO::new)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("User not found")));
+    }
+/*
     public void delete(String id) {
         getEntityById(id);
         userRepository.deleteById(id);

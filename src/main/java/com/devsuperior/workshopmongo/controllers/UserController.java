@@ -40,13 +40,13 @@ public class UserController {
                         .created(builder.path("/users/{id}").buildAndExpand(newUser.getId())
                                 .toUri()).body(newUser));
     }
-/*
-    @PutMapping(value = "{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable String id, @RequestBody UserDTO dto) {
-        dto = userService.update(id, dto);
-        return ResponseEntity.ok().body(dto);
-    }
 
+    @PutMapping(value = "{id}")
+    public Mono<ResponseEntity<UserDTO>> update(@PathVariable String id, @RequestBody UserDTO dto) {
+        return userService.update(id, dto)
+                .map(userUpdated -> ResponseEntity.ok().body(userUpdated));
+    }
+/*
     @DeleteMapping(value = "{id}")
     public ResponseEntity<UserDTO> delete(@PathVariable String id) {
         userService.delete(id);
