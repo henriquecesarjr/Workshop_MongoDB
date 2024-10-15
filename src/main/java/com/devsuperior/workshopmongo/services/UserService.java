@@ -7,6 +7,8 @@ import com.devsuperior.workshopmongo.models.entities.User;
 import com.devsuperior.workshopmongo.repositories.UserRepository;
 import com.devsuperior.workshopmongo.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,18 +22,17 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    public Flux<UserDTO> findAll() {
+        return userRepository.findAll().map(UserDTO::new);
+    }
+
+    public Mono<UserDTO> findById(String id) {
+        return userRepository.findById(id)
+                .map(UserDTO::new)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("User not found")));
+    }
 /*
-    public List<UserDTO> findAll() {
-        List<User> list = userRepository.findAll();
-        return list.stream().map(UserDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    public UserDTO findById(String id) {
-        User entity = getEntityById(id);
-        return new UserDTO(entity);
-    }
-
     public UserDTO insert(UserDTO dto) {
         User entity = new User();
         copyDtoToEntity(dto, entity);

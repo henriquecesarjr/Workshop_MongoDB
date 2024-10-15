@@ -5,6 +5,8 @@ import com.devsuperior.workshopmongo.models.dto.UserDTO;
 import com.devsuperior.workshopmongo.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.List;
@@ -18,20 +20,18 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    /*
-    @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
-        List<UserDTO> list = userService.findAll();
 
-        return ResponseEntity.ok().body(list);
+    @GetMapping
+    public Flux<UserDTO> findAll() {
+        return userService.findAll();
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable String id) {
-        UserDTO obj = userService.findById(id);
-        return ResponseEntity.ok().body(obj);
+    public Mono<ResponseEntity<UserDTO>> findById(@PathVariable String id) {
+        return userService.findById(id)
+                .map(userDto -> ResponseEntity.ok().body(userDto));
     }
-
+/*
     @PostMapping
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO dto) {
         dto = userService.insert(dto);
