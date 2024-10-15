@@ -4,6 +4,7 @@ import com.devsuperior.workshopmongo.models.embedded.Author;
 import com.devsuperior.workshopmongo.models.embedded.Comment;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -17,8 +18,10 @@ public class Post {
     private Instant moment;
     private String title;
     private String body;
-
     private Author author;
+
+    @DocumentReference
+    private User user;
 
     private List<Comment> comments = new ArrayList<>();
 
@@ -73,7 +76,19 @@ public class Post {
         this.author = author;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public List<Comment> getComments() {
         return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }
