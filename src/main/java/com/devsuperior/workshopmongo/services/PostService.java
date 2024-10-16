@@ -8,6 +8,7 @@ import com.devsuperior.workshopmongo.repositories.PostRepository;
 import com.devsuperior.workshopmongo.services.exceptions.ResourceNotFoundException;
 import org.bson.types.BSONTimestamp;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import javax.print.attribute.standard.OrientationRequested;
 import java.time.DateTimeException;
@@ -19,17 +20,18 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
 
-    //private final PostRepository postRepository;
-/*
+    private final PostRepository postRepository;
+
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
-    public PostDTO findById(String id) {
-        Post entity = getEntityById(id);
-        return new PostDTO(entity);
+    public Mono<PostDTO> findById(String id) {
+        return postRepository.findById(id)
+                .map(PostDTO::new)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Post not found")));
     }
-
+/*
     public List<PostDTO> findByTitle(String text) {
         List<Post> list = postRepository.searchTitle(text);
         return list.stream().map(PostDTO::new).collect(Collectors.toList());
