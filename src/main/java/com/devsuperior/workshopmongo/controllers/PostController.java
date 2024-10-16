@@ -5,12 +5,15 @@ import com.devsuperior.workshopmongo.models.dto.PostDTO;
 import com.devsuperior.workshopmongo.models.dto.UserDTO;
 import com.devsuperior.workshopmongo.services.PostService;
 import com.devsuperior.workshopmongo.services.UserService;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -34,15 +37,24 @@ public class PostController {
         text = URL.decodeParam(text);
         return postService.findByTitle(text);
     }
-/*
+
     @GetMapping(value = "/fullsearch")
-    public ResponseEntity<List<PostDTO>> fullSearch(
+    public Flux<PostDTO> fullSearch (
             @RequestParam(value = "text", defaultValue = "") String text,
-            @RequestParam(value = "start", defaultValue = "") String start,
-            @RequestParam(value = "end", defaultValue = "") String end)
+            @RequestParam(value = "minDate", defaultValue = "") String minDate,
+            @RequestParam(value = "maxDate", defaultValue = "") String maxDate) throws UnsupportedEncodingException
     {
-        List<PostDTO> list = postService.fullSearch(text, start, end);
-        return ResponseEntity.ok().body(list);
-    }*/
+        text = URL.decodeParam(text);
+        Instant min;
+        Instant max;
+        try {
+            min = URL.convertDate(minDate, Instant.EPOCH);
+            max = URL.convertDate(maxDate, Instant.now());
+        } catch (ParseException e) {
+            throw new RuntimeException("Invalid date format", e); // Ou uma resposta mais apropriada
+        }
+
+        return postService.fullSearch(text, min, max);
+    }
 
 }

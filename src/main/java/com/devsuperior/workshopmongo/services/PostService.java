@@ -37,18 +37,12 @@ public class PostService {
         return postRepository.searchTitle(text)
                 .map(PostDTO::new);
     }
-/*
-    public List<PostDTO> fullSearch(String text, String start, String end) {
-        Instant startMoment = convertMoment(start, Instant.ofEpochMilli(0L));
-        Instant endMoment = convertMoment(end, Instant.now());
 
-        List<Post> list = postRepository.fullSearch(text, startMoment, endMoment);
-        return list.stream().map(PostDTO::new).collect(Collectors.toList());
-    }
+    public Flux<PostDTO> fullSearch(String text, Instant minDate, Instant maxDate) {
+        maxDate = maxDate.plusSeconds(86400);
 
-    private Post getEntityById(String id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+        return postRepository.fullSearch(text, minDate, maxDate)
+                .map(PostDTO::new);
     }
 
     private Instant convertMoment(String originalString, Instant alternative) {
@@ -57,5 +51,5 @@ public class PostService {
         } catch (DateTimeParseException e) {
             return alternative;
         }
-    }*/
+    }
 }
