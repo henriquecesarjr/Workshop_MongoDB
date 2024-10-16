@@ -7,6 +7,7 @@ import com.devsuperior.workshopmongo.models.entities.User;
 import com.devsuperior.workshopmongo.repositories.PostRepository;
 import com.devsuperior.workshopmongo.services.exceptions.ResourceNotFoundException;
 import org.bson.types.BSONTimestamp;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -45,11 +46,8 @@ public class PostService {
                 .map(PostDTO::new);
     }
 
-    private Instant convertMoment(String originalString, Instant alternative) {
-        try {
-            return Instant.parse(originalString);
-        } catch (DateTimeParseException e) {
-            return alternative;
-        }
+    public Flux<PostDTO> getUserPosts(String id) {
+        return postRepository.findByUser(new ObjectId(id))
+                .map(PostDTO::new);
     }
 }

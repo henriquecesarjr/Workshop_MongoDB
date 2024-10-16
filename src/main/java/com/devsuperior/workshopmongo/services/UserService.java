@@ -55,17 +55,7 @@ public class UserService {
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("User not found")))
                 .flatMap(userRepository::delete);
     }
-/*
-    public List<PostDTO> getUserPosts(String id) {
-        User user = getEntityById(id);
-        return user.getPosts().stream().map(PostDTO::new).collect(Collectors.toList());
-    }
 
-    private User getEntityById(String id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
-    }
-*/
     private void copyDtoToEntity(UserDTO dto, User entity) {
         entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());

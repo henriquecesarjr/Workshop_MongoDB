@@ -1,6 +1,7 @@
 package com.devsuperior.workshopmongo.repositories;
 
 import com.devsuperior.workshopmongo.models.entities.Post;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,9 @@ public interface PostRepository extends ReactiveMongoRepository<Post, String> {
     Flux<Post> fullSearch(String text, Instant startMoment, Instant endMoment);
 
     Flux<Post> findByTitleContainingIgnoreCase(String title);
+
+    @Query("{ 'user' : ?0 }")
+    Flux<Post> findByUser(ObjectId iD);
 
 }
 

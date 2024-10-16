@@ -3,6 +3,7 @@ package com.devsuperior.workshopmongo.controllers;
 import com.devsuperior.workshopmongo.controllers.util.URL;
 import com.devsuperior.workshopmongo.models.dto.PostDTO;
 import com.devsuperior.workshopmongo.models.dto.UserDTO;
+import com.devsuperior.workshopmongo.repositories.PostRepository;
 import com.devsuperior.workshopmongo.services.PostService;
 import com.devsuperior.workshopmongo.services.UserService;
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
@@ -21,9 +22,11 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final PostRepository postRepository;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, PostRepository postRepository) {
         this.postService = postService;
+        this.postRepository = postRepository;
     }
 
     @GetMapping(value = "/{id}")
@@ -55,6 +58,11 @@ public class PostController {
         }
 
         return postService.fullSearch(text, min, max);
+    }
+
+    @GetMapping(value = "/user/{id}")
+    public Flux<PostDTO> getUserPosts(@PathVariable String id) {
+        return postService.getUserPosts(id);
     }
 
 }
