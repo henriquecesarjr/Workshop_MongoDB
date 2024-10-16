@@ -4,6 +4,7 @@ import com.devsuperior.workshopmongo.models.dto.PostDTO;
 import com.devsuperior.workshopmongo.models.dto.UserDTO;
 import com.devsuperior.workshopmongo.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
@@ -17,9 +18,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final ServerCodecConfigurer serverCodecConfigurer;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ServerCodecConfigurer serverCodecConfigurer) {
         this.userService = userService;
+        this.serverCodecConfigurer = serverCodecConfigurer;
     }
 
     @GetMapping
@@ -46,13 +49,13 @@ public class UserController {
         return userService.update(id, dto)
                 .map(userUpdated -> ResponseEntity.ok().body(userUpdated));
     }
-/*
-    @DeleteMapping(value = "{id}")
-    public ResponseEntity<UserDTO> delete(@PathVariable String id) {
-        userService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
 
+    @DeleteMapping(value = "{id}")
+    public Mono<ResponseEntity<Void>> delete(@PathVariable String id) {
+        return userService.delete(id)
+                .then(Mono.just(ResponseEntity.noContent().build()));
+    }
+/*
     @GetMapping(value = "/{id}/posts")
     public ResponseEntity<List<PostDTO>> getUserPosts(@PathVariable String id) {
         List<PostDTO> list = userService.getUserPosts(id);
