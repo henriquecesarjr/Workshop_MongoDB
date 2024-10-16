@@ -8,6 +8,7 @@ import com.devsuperior.workshopmongo.repositories.PostRepository;
 import com.devsuperior.workshopmongo.services.exceptions.ResourceNotFoundException;
 import org.bson.types.BSONTimestamp;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.print.attribute.standard.OrientationRequested;
@@ -31,12 +32,12 @@ public class PostService {
                 .map(PostDTO::new)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Post not found")));
     }
-/*
-    public List<PostDTO> findByTitle(String text) {
-        List<Post> list = postRepository.searchTitle(text);
-        return list.stream().map(PostDTO::new).collect(Collectors.toList());
-    }
 
+    public Flux<PostDTO> findByTitle(String text) {
+        return postRepository.searchTitle(text)
+                .map(PostDTO::new);
+    }
+/*
     public List<PostDTO> fullSearch(String text, String start, String end) {
         Instant startMoment = convertMoment(start, Instant.ofEpochMilli(0L));
         Instant endMoment = convertMoment(end, Instant.now());
